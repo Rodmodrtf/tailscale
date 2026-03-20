@@ -265,6 +265,9 @@ var forceIPCommand = envknob.RegisterBool("TS_DEBUG_USE_IP_COMMAND")
 // useIPCommand reports whether r should use the "ip" command (or its
 // fake commandRunner for tests) instead of netlink.
 func (r *linuxRouter) useIPCommand() bool {
+	if getDistroFunc() == distro.FreshTomato {
+		return true
+	}
 	if r.cmd == nil {
 		panic("invalid init")
 	}
@@ -754,6 +757,9 @@ func (r *linuxRouter) getV6Available() bool {
 // address is already assigned to the interface, or if the addition
 // fails.
 func (r *linuxRouter) addAddress(addr netip.Prefix) error {
+	if getDistroFunc() == distro.FreshTomato && addr.Addr().Is6() {
+		return nil
+	}
 	if !r.getV6Available() && addr.Addr().Is6() {
 		return nil
 	}
@@ -1153,6 +1159,9 @@ func (r *linuxRouter) addrFamilies() []addrFamily {
 // routing loops. If the rule exists and appears to be a
 // tailscale-managed rule, it is gracefully replaced.
 func (r *linuxRouter) addIPRules() error {
+	if getDistroFunc() == distro.FreshTomato {
+		return nil
+	}
 	if !r.ipRuleAvailable {
 		return nil
 	}
@@ -1573,7 +1582,7 @@ func normalizeCIDR(cidr netip.Prefix) string {
 // running iptables/nftables commands.
 func platformCanNetfilter() bool {
 	switch getDistroFunc() {
-	case distro.Synology:
+	case distro.Synology, distro.FreshTomato:
 		// Synology doesn't support iptables or nftables. Attempting to run it
 		// just blocks for a long time while it logs about failures.
 		//
