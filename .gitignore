@@ -52,3 +52,5 @@ client/web/build/assets
 
 # Ignore personal IntelliJ settings
 .idea/
+tailscale-freshtomato-armv5
+tailscale.combined
