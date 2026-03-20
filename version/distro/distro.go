@@ -32,7 +32,8 @@ const (
 	Unraid    = Distro("unraid")
 	Alpine    = Distro("alpine")
 	UBNT      = Distro("ubnt") // Ubiquiti Networks
-	JetKVM    = Distro("jetkvm")
+	JetKVM      = Distro("jetkvm")
+	FreshTomato = Distro("freshtomato")
 )
 
 var distro lazy.SyncValue[Distro]
@@ -88,6 +89,8 @@ func linuxDistro() Distro {
 		return Debian
 	case have("/etc/arch-release"):
 		return Arch
+	case have("/var/run/freshtomato"):
+		return FreshTomato
 	case have("/etc/openwrt_version"):
 		return OpenWrt
 	case have("/run/current-system/sw/bin/nixos-version"):

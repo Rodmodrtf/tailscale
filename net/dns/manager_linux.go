@@ -68,6 +68,10 @@ func NewOSConfigurator(logf logger.Logf, health *health.Tracker, _ policyclient.
 		return NewNoopManager()
 	}
 
+	if distro.Get() == distro.FreshTomato {
+		return newFreshTomatoManager(logf, health), nil
+	}
+
 	env := newOSConfigEnv{
 		fs:              directFS{},
 		resolvconfStyle: resolvconfStyle,
