@@ -65,7 +65,7 @@ func (m *freshTomatoManager) reloadDNSMasq() {
 	}
 }
 
-func (m *freshTomatoManager) SupportsSplitDNS() bool { return true }
+func (m *freshTomatoManager) SupportsSplitDNS() bool { return false }
 
 func (m *freshTomatoManager) GetBaseConfig() (OSConfig, error) {
 	return OSConfig{}, nil

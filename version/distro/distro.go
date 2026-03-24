@@ -89,7 +89,7 @@ func linuxDistro() Distro {
 		return Debian
 	case have("/etc/arch-release"):
 		return Arch
-	case have("/var/run/freshtomato"):
+	case haveDir("/jffs") && have("/jffs/scripts/start_tailscale.sh"):
 		return FreshTomato
 	case have("/etc/openwrt_version"):
 		return OpenWrt
